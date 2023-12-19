@@ -3474,10 +3474,10 @@ const PDFViewerApplication = {
       if (HOSTED_VIEWER_ORIGINS.includes(viewerOrigin)) {
         return;
       }
-      const fileOrigin = new URL(file, window.location.href).origin;
-      if (fileOrigin !== viewerOrigin) {
-        throw new Error("file origin does not match viewer's");
-      }
+//       const fileOrigin = new URL(file, window.location.href).origin;
+//       if (fileOrigin !== viewerOrigin) {
+//         throw new Error("file origin does not match viewer's");
+//       }
     } catch (ex) {
       PDFViewerApplication.l10n.get("pdfjs-loading-error").then(msg => {
         PDFViewerApplication._documentError(msg, {
@@ -4489,7 +4489,7 @@ const defaultOptions = {
     kind: OptionKind.API
   },
   standardFontDataUrl: {
-    value: "../web/standard_fonts/",
+    value: "file:///android_asset/pdf/standard_fonts/",
     kind: OptionKind.API
   },
   verbosity: {
@@ -4501,7 +4501,7 @@ const defaultOptions = {
     kind: OptionKind.WORKER
   },
   workerSrc: {
-    value: "../build/pdf.worker.mjs",
+    value: "file:///android_asset/pdf/js/pdf.worker.mjs",
     kind: OptionKind.WORKER
   }
 };
@@ -4513,7 +4513,7 @@ const defaultOptions = {
 }
 {
   defaultOptions.defaultUrl = {
-    value: "/sample.pdf",
+    value: "file:///android_asset/sample.pdf",
     kind: OptionKind.VIEWER
   };
   defaultOptions.disablePreferences = {
@@ -4525,7 +4525,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER
   };
   defaultOptions.sandboxBundleSrc = {
-    value: "/pdf.sandbox.mjs",
+    value: "file:///android_asset/pdf/js/pdf.sandbox.mjs",
     kind: OptionKind.VIEWER
   };
 }
