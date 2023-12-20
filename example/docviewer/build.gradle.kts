@@ -34,8 +34,4 @@ dependencies {
     compileOnly("androidx.core:core-ktx:1.12.0")
     compileOnly("androidx.appcompat:appcompat:1.6.1")
     compileOnly("com.google.android.material:material:1.11.0")
-
-    implementation("org.apache.poi:poi:5.2.5")
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
-    implementation("org.apache.poi:poi-scratchpad:5.2.5")
 }

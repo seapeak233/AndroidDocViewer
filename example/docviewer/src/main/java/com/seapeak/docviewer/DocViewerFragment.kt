@@ -1,6 +1,7 @@
 package com.seapeak.docviewer
 
 import android.annotation.SuppressLint
+import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import java.io.File
 
 
 class DocViewerFragment : Fragment(R.layout.doc_viewer_fragment) {
@@ -29,6 +31,7 @@ class DocViewerFragment : Fragment(R.layout.doc_viewer_fragment) {
         webSettings.allowContentAccess = true
         webSettings.allowFileAccessFromFileURLs = true
         webSettings.allowUniversalAccessFromFileURLs = true
+        webSettings.setSupportZoom(true)
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(
@@ -48,10 +51,11 @@ class DocViewerFragment : Fragment(R.layout.doc_viewer_fragment) {
             }
         }
 
-        webView.loadUrl("file:///android_asset/pdf/viewer.html?file=file:///android_asset/sample.pdf")
-        webView.postDelayed({
-            webView.loadUrl("file:///android_asset/pdf/viewer.html?file=https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf")
-        }, 5000)
+//        webView.loadUrl("file:///android_asset/excel/viewer.html")
+        webView.loadUrl("file:///android_asset/word/viewer.html")
+//        webView.postDelayed({
+//            webView.loadUrl("file:///android_asset/pdf/viewer.html?file=https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf")
+//        }, 5000)
     }
 
 }
