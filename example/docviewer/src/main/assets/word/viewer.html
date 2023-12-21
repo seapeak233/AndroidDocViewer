@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, user-scalable=yes">
     <title>Excel Online Preview</title>
-    <script src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+    <script src="file:///android_asset/word/jszip.min.js"></script>
     <script src="file:///android_asset/word/docx-preview.min.js"></script>
 </head>
 
@@ -16,7 +16,6 @@
 
         var xhr = new XMLHttpRequest
         xhr.onload = function () {
-            console.log("======", xhr.response)
             docx.renderAsync(xhr.response, document.getElementById("container"), null, {
                 inWrapper: false
             }).then(x => console.log("docx: finished"));

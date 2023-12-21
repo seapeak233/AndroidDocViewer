@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta name="viewport" content="width=900px, initial-scale=1, maximum-scale=5, user-scalable=yes">
-    <title>Excel Online Preview</title>
-    <script src="file:///android_asset/excel/xlsx.full.min.js"></script>
-    <style>
+  <meta name="viewport" content="width=device-width, user-scalable=yes">
+  <title>Excel Online Preview</title>
+  <script lang="javascript" src="file:///android_asset/excel/xlsx.full.min.js"></script>
+  <style>
     /* 根据需要设置单元格样式 */
     .preview {
       font-family: Arial, sans-serif;
       width: auto;
       height: auto;
       padding: 0;
-      margin:0;
+      margin: 0;
     }
-    td {
+
+    table {
+      border-right: 1px solid #DEDEDE;
+      border-bottom: 1px solid #DEDEDE;
+      border-collapse: collapse;
+    }
+
+    table td {
+      border-left: 1px solid #DEDEDE;
+      border-top: 1px solid #DEDEDE;
     }
   </style>
 </head>
+
 <body class="preview">
-<div id="excelPreview"></div>
-<script src="file:///android_asset/excel/viewer.js"></script>
+  <div id="excelPreview"></div>
+  <script src="file:///android_asset/excel/viewer.js"></script>
 </body>
