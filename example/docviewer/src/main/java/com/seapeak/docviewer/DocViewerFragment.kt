@@ -11,17 +11,45 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
+import com.seapeak.docviewer.config.DocConfig
+import com.seapeak.docviewer.config.DocType
 import java.io.File
 
 
-class DocViewerFragment : Fragment(R.layout.doc_viewer_fragment) {
+class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.doc_viewer_fragment) {
 
     private lateinit var webView: WebView
 
-    @SuppressLint("SetJavaScriptEnabled")
+    companion object {
+        fun newInstance(docConfig: DocConfig): DocViewerFragment {
+            return DocViewerFragment(docConfig)
+        }
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         webView = view.findViewById(R.id.webView)
 
+        initWebView()
+
+        webView.post {
+            val url = when (docConfig.type) {
+                DocType.EXCEL -> "file:///android_asset/excel/viewer.html"
+                DocType.WORD -> "file:///android_asset/word/viewer.html"
+                DocType.PPT -> "file:///android_asset/ppt/viewer.html"
+                DocType.PDF -> "file:///android_asset/pdf/viewer.html"
+                else -> null
+            }
+            if (url == null) {
+                activity?.finish()
+            } else {
+                webView.loadUrl("$url?file=${docConfig.url}")
+            }
+        }
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun initWebView() {
         val webSettings = webView.settings
         webSettings.allowFileAccess = true
         webSettings.javaScriptEnabled = true
@@ -50,11 +78,6 @@ class DocViewerFragment : Fragment(R.layout.doc_viewer_fragment) {
                 return true
             }
         }
-
-//        webView.loadUrl("file:///android_asset/excel/viewer.html")
-//        webView.loadUrl("file:///android_asset/word/viewer.html")
-//        webView.loadUrl("file:///android_asset/pdf/viewer.html")
-        webView.loadUrl("file:///android_asset/ppt/viewer.html")
     }
 
 }

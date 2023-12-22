@@ -1,13 +1,12 @@
 
-
 .slide {
 	position: relative;
-	border: 1px solid #333;
-	border-radius: 10px;
+	width: 100%
 	overflow: hidden;
-	margin-bottom: 50px;
-	margin-left: auto;
-  	margin-right: auto;
+	margin-top: 15px;
+	margin-bottom: 25px;
+	background-color: #ffffff;
+	box-shadow:0 15px 20px #33333344;
 }
 
 .slide div.block {
@@ -43,14 +42,6 @@
 }
 .slide .slide-prgrph{
 	width: 100%;
-	/* overflow-wrap:break-word;
-  	word-wrap: break-word;  */
-  
-	/* word-break: break-word; */
-	/* unicode-bidi: bidi-override; */
-	/* hyphens: auto;
-	overflow-wrap: break-word; */
-	
 }
 
 .slide .line-break-br::before{
@@ -139,7 +130,6 @@
 	align-items: flex-end;
 }
 
-
 .slide li.slide {
 	margin: 10px 0px;
 	font-size: 18px;
@@ -153,9 +143,3 @@
 	position: absolute;
 	overflow: visible;
 }
-/*
-#pptx-thumb {
-	min-width: 240px;
-	height: 180px;
-}
-*/

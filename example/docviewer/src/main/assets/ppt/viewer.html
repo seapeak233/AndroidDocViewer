@@ -14,58 +14,13 @@
 <script type="text/javascript" src="file:///android_asset/ppt/js/d3.min.js"></script>
 <script type="text/javascript" src="file:///android_asset/ppt/js/nv.d3.min.js"></script>
 <script type="text/javascript" src="file:///android_asset/ppt/js/pptxjs.min.js"></script>
-<script type="text/javascript" src="file:///android_asset/ppt/js/divs2slides.js"></script>
-
-<script type="text/javascript" src="file:///android_asset/ppt/js/jquery.fullscreen-min.js"></script>
-
-<script type="text/javascript">
-    $(function() {
-		var oldWidth, oldMargin ,isFullscreenMode=false;
-		$("#fullscreen-btn").on("click", function(){
-			 			
-			if(!isFullscreenMode){
-				oldWidth = $("#result .slide").css("width");
-				oldMargin = $("#result .slide").css("margin");
-				$("#result .slide").css({
-					"width": "99%",
-					"margin": "0 auto"
-				})
-				$("#result").toggleFullScreen();
-				isFullscreenMode = true;
-			}else{
-				$("#result .slide").css({
-					"width": oldWidth,
-					"margin": oldMargin
-				})
-				$("#result").toggleFullScreen();
-				isFullscreenMode = false;
-			}		
-		});
-		$(document).bind("fullscreenchange", function() {
-			if(!$(document).fullScreen()){
-				$("#result .slide").css({
-					"width": oldWidth,
-  					"margin": oldMargin
-				})
-			}
-		});
-    });
-</script>
+<script type="text/javascript" src="file:///android_asset/ppt/js/divs2slides.min.js"></script>
 <style>
-	html, body { margin: 0; padding: 0; }
-	#warper { margin-right: auto; margin-left: auto; width: 900px; }
+	body { margin: 0; padding: 0; background-color: #d4d4d4;}
 </style>
 </head>
 <body>
-	<div id="warper">
-		<input id="uploadFileInput" type="file" />
-		<br><br>
-		<div id="container">
-			<input id="fullscreen-btn" type="button" value="Fullscreen" />
-			<br>
-			<div  id="result"></div>
-		</div>
-	</div>
+<div id="result"></div>
 <script>
 $("#result").pptxToHtml({
 	pptxFileUrl: "file:///android_asset/sample4.pptx",
