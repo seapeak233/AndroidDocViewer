@@ -53,9 +53,8 @@ class DocViewerFragment : Fragment(R.layout.doc_viewer_fragment) {
 
 //        webView.loadUrl("file:///android_asset/excel/viewer.html")
 //        webView.loadUrl("file:///android_asset/word/viewer.html")
-//        webView.postDelayed({
-            webView.loadUrl("file:///android_asset/pdf/viewer.html?file=https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf")
-//        }, 5000)
+//        webView.loadUrl("file:///android_asset/pdf/viewer.html")
+        webView.loadUrl("file:///android_asset/ppt/viewer.html")
     }
 
 }
