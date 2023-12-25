@@ -2,9 +2,11 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=device-width, user-scalable=yes">
+  <meta name="viewport" content="user-scalable=yes">
   <title>Excel Online Preview</title>
   <script lang="javascript" src="file:///android_asset/excel/xlsx.full.min.js"></script>
+  <script type="text/javascript" src="file:///android_asset/excel/handsontable.full.min.js"></script>
+  <link rel="stylesheet" href="file:///android_asset/excel/handsontable.full.min.css" />
   <style>
     /* 根据需要设置单元格样式 */
     .preview {
@@ -13,6 +15,13 @@
       height: auto;
       padding: 0;
       margin: 0;
+      overflow: scroll;
+    }
+
+    .sheetName {
+      font-size: 26px;
+      margin-top: 60px;
+      margin-bottom: 30px;
     }
 
     table {
@@ -24,11 +33,14 @@
     table td {
       border-left: 1px solid #DEDEDE;
       border-top: 1px solid #DEDEDE;
+      padding: 4px;
+      max-width: 400px;
+      white-space:wrap;
     }
   </style>
 </head>
 
 <body class="preview">
-  <div id="excelPreview"></div>
+  <div id="excelPreview" style="white-space:nowrap;margin:10px"></div>
   <script src="file:///android_asset/excel/viewer.js"></script>
 </body>

@@ -11,8 +11,8 @@
 <body style="padding: 0;margin:0;">
     <div id="container"></div>
     <script>
-        // var url = "https://www.qycloud.com.cn/api/download/forKey?host=aliyun&fileName=%E5%90%AF%E4%B8%9A%E4%BA%91%E9%9A%90%E7%A7%81%E7%AD%96%E7%95%A520230928.docx&filePath=qFile%2FqChat%2Fim000000117731703056077339_370_%E5%90%AF%E4%B8%9A%E4%BA%91%E9%9A%90%E7%A7%81%E7%AD%96%E7%95%A520230928.docx&expires=-1&iosType=qycloudwebchat&entId=qFile&sign=MTcwMzA1NjA3Nzptc3lEcmFzSklER2VpeUlTQXo3RUVYTmVVVVZXelpleGN1a3RtNTJFT2tUR3g3ZXZCekJlWFd2Q2hKekU5SnFtUms1R0tBTHBJWE9rT2NPdlJwVUpDUT09OjVHNFd3ZXl4MG9XSWRmV1E1eVd4ekhwYmhJNEN6UVl3cEgxekxJVWJJNXlvNE93bnI0R2NnS3ZRTzdXeXY0ekVpcTgwVUhZWXRwemloY1hTc3M3MGd3PT0=&styles=eyJmaWxlSU9Eb21haW4iOiJodHRwczovL3d3dy5xeWNsb3VkLmNvbS5jbiJ9&isView=0";
-        var url = "file:///android_asset/sample2.docx";
+        const params = new URLSearchParams(window.location.search);
+        const fileUrl = params.get("file");
 
         var xhr = new XMLHttpRequest
         xhr.onload = function () {
@@ -23,7 +23,7 @@
         xhr.onerror = function () {
             reject(new TypeError('Local request failed'))
         }
-        xhr.open('GET', url)
+        xhr.open('GET', fileUrl)
         xhr.responseType = "blob";
         xhr.send(null)
     </script>

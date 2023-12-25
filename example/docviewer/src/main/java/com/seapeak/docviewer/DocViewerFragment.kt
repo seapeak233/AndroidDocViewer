@@ -48,6 +48,11 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
         }
     }
 
+    override fun onDestroyView() {
+        webView.destroy()
+        super.onDestroyView()
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() {
         val webSettings = webView.settings

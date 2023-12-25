@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btn_excel).setOnClickListener {
             val intent = Intent(this, PreviewActivity::class.java)
-            intent.putExtra("config", DocConfig("file:///android_asset/sample3.xlsx", DocType.EXCEL))
+            intent.putExtra("config", DocConfig("file:///android_asset/sample3.xls", DocType.EXCEL))
             startActivity(intent)
         }
 
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.btn_ppt).setOnClickListener {
             val intent = Intent(this, PreviewActivity::class.java)
-            intent.putExtra("config", DocConfig("file:///android_asset/sample4.ppt", DocType.PPT))
+            intent.putExtra("config", DocConfig("file:///android_asset/sample4.pptx", DocType.PPT))
             startActivity(intent)
         }
 
