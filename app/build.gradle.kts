@@ -37,6 +37,6 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
-//    implementation(project(":docviewer"))
-    implementation("com.seapeak.docviewer:viewer:0.0.1")
+    implementation(project(":docviewer"))
+//    implementation("com.github.seapeak233:AndroidDocViewer:0.0.2")
 }

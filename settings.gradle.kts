@@ -11,10 +11,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
-rootProject.name = "example"
+rootProject.name = "AndroidDocViewer"
 include(":app")
 include(":docviewer")
