@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Markdown文件在线预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 底部工具栏样式 */
+        .bottom-toolbar {
+            background: #eeeeee;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid #ddd;
+            flex-shrink: 0;
+        }
+
+        .toggle-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            color: #333;
+            padding: 6px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: #f5f5f5;
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Markdown 内容样式 */
+        .markdown-content {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333;
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        /* 标题样式 */
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4,
+        .markdown-content h5,
+        .markdown-content h6 {
+            margin: 1.5em 0 0.5em 0;
+            font-weight: 600;
+            line-height: 1.25;
+            color: #1a1a1a;
+        }
+
+        .markdown-content h1 {
+            font-size: 2em;
+            border-bottom: 2px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.5em;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+
+        .markdown-content h3 {
+            font-size: 1.25em;
+        }
+
+        .markdown-content h4 {
+            font-size: 1em;
+        }
+
+        .markdown-content h5 {
+            font-size: 0.875em;
+        }
+
+        .markdown-content h6 {
+            font-size: 0.85em;
+            color: #6a737d;
+        }
+
+        /* 段落样式 */
+        .markdown-content p {
+            margin: 0 0 16px 0;
+        }
+
+        /* 列表样式 */
+        .markdown-content ul,
+        .markdown-content ol {
+            padding-left: 2em;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-content li {
+            margin: 0.25em 0;
+        }
+
+        /* 代码样式 */
+        .markdown-content code {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+            padding: 0.2em 0.4em;
+        }
+
+        .markdown-content pre {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+            line-height: 1.45;
+            overflow: auto;
+            padding: 16px;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-size: 100%;
+        }
+
+        /* 引用样式 */
+        .markdown-content blockquote {
+            border-left: 0.25em solid #dfe2e5;
+            color: #6a737d;
+            padding: 0 1em;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-content blockquote > :first-child {
+            margin-top: 0;
+        }
+
+        .markdown-content blockquote > :last-child {
+            margin-bottom: 0;
+        }
+
+        /* 表格样式 */
+        .markdown-content table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            display: block;
+            overflow: auto;
+            width: 100%;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-content table th,
+        .markdown-content table td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+
+        .markdown-content table th {
+            background: #f6f8fa;
+            font-weight: 600;
+        }
+
+        .markdown-content table tr:nth-child(2n) {
+            background: #f6f8fa;
+        }
+
+        /* 链接样式 */
+        .markdown-content a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* 图片样式 */
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+            margin: 8px 0;
+            border-radius: 4px;
+        }
+
+        /* 分割线样式 */
+        .markdown-content hr {
+            border: none;
+            border-top: 1px solid #e1e4e8;
+            margin: 24px 0;
+        }
+
+        /* 原始内容样式 */
+        .raw-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <!-- 内容显示区域 -->
+        <div id="markdownContent" class="markdown-content loading">
+            正在加载 Markdown 文件...
+        </div>
+    </div>
+
+    <!-- 底部工具栏 -->
+    <div class="bottom-toolbar">
+        <button class="toggle-btn" id="toggleViewBtn" onclick="toggleView()">切换到源码</button>
+    </div>
+
+    <!-- 引入 markdown-it 库 -->
+    <script src="markdown-it.min.js"></script>
+
+    <script>
+        /**
+         * 简化Markdown预览器类
+         * 负责处理markdown文件的加载、渲染和视图切换
+         */
+        class MarkdownViewer {
+            constructor() {
+                // 初始化属性
+                this.originalContent = '';
+                this.isRawView = false;
+                
+                // 初始化 markdown-it 实例
+                this.md = window.markdownit({
+                    html: true,         // 启用 HTML 标签
+                    xhtmlOut: false,    // 使用 '/' 来闭合单标签 (<br />)
+                    breaks: true,       // 转换段落里的 '\n' 到 <br>
+                    linkify: true,      // 将类似 URL 的文本自动转换为链接
+                    typographer: true,  // 启用一些语言中性的替换 + 引号美化
+                });
+                
+                // 获取DOM元素
+                this.contentEl = document.getElementById('markdownContent');
+                this.toggleBtn = document.getElementById('toggleViewBtn');
+                
+                // 初始化
+                this.init();
+            }
+
+            /**
+             * 初始化方法
+             */
+            init() {
+                this.loadFile();
+            }
+
+            /**
+             * 加载文件内容
+             */
+            loadFile() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    const fileUrl = params.get("file");
+                    
+                    if (!fileUrl) {
+                        throw new Error('未指定文件路径');
+                    }
+
+                    // 使用 XMLHttpRequest 代替 fetch，因为它在 Android WebView 中支持 file:// 协议
+                    const xhr = new XMLHttpRequest();
+                    
+                    xhr.onload = () => {
+                        if (xhr.status === 200 || xhr.status === 0) { // status 0 表示本地文件
+                            this.displayContent(xhr.responseText, fileUrl);
+                        } else {
+                            this.showError(`文件加载失败: HTTP ${xhr.status}`);
+                        }
+                    };
+                    
+                    xhr.onerror = () => {
+                        this.showError('文件加载失败: 网络错误或文件不存在');
+                    };
+                    
+                    xhr.open('GET', fileUrl, true);
+                    xhr.responseType = 'text';
+                    xhr.send();
+                    
+                } catch (error) {
+                    this.showError(`文件加载失败: ${error.message}`);
+                }
+            }
+
+            /**
+             * 显示文件内容
+             */
+            displayContent(content, fileUrl) {
+                this.originalContent = content;
+                this.renderMarkdown(content);
+            }
+
+            /**
+             * 渲染 Markdown 内容
+             */
+            renderMarkdown(content) {
+                try {
+                    const html = this.md.render(content);
+                    this.contentEl.innerHTML = html;
+                    this.contentEl.className = 'markdown-content';
+                } catch (error) {
+                    this.showError(`Markdown 渲染失败: ${error.message}`);
+                }
+            }
+
+            /**
+             * 显示原始内容
+             */
+            showRawContent() {
+                this.contentEl.textContent = this.originalContent;
+                this.contentEl.className = 'raw-content';
+            }
+
+            /**
+             * 切换视图
+             */
+            toggleView() {
+                this.isRawView = !this.isRawView;
+                
+                if (this.isRawView) {
+                    this.showRawContent();
+                    this.toggleBtn.textContent = '切换到预览';
+                } else {
+                    this.renderMarkdown(this.originalContent);
+                    this.toggleBtn.textContent = '切换到源码';
+                }
+            }
+
+            /**
+             * 显示错误信息
+             */
+            showError(message) {
+                this.contentEl.innerHTML = `<div class="error">${message}</div>`;
+            }
+        }
+
+        // 全局实例
+        let markdownViewer;
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            markdownViewer = new MarkdownViewer();
+        });
+
+        // 全局函数（供HTML按钮调用）
+        function toggleView() {
+            markdownViewer.toggleView();
+        }
+    </script>
+</body>
+
+</html>

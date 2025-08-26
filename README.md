@@ -14,7 +14,7 @@ Android文档本地预览方案<持续优化中...>
 - [x] 支持ppt
 - [x] 支持excel
 - [ ] 支持txt
-- [ ] 样式优化
+- [ ] 支持Markdown
 
 ## 使用
 * 引入aar:
@@ -39,7 +39,9 @@ val fragment = DocViewerFragment.newInstance(config)
 ![Word预览](https://github.com/seapeak233/AndroidDocViewer/blob/main/static/word_shot.png)
 
 ## 非常感谢方案思路
-[sheetjs](https://github.com/SheetJS/sheetjs)
-[pdfjs](https://github.com/mozilla/pdf.js)
-[pptxjs](https://github.com/meshesha/PPTXjs)
-[docxjs](https://github.com/VolodymyrBaydalka/docxjs)
+| 名称           | 仓库链接                                              | 版本号      |
+| -------------- | ----------------------------------------------------- | ----------- |
+| sheetjs        | [sheetjs](https://github.com/SheetJS/sheetjs)         | 0.20.3      |
+| pdfjs          | [pdfjs](https://github.com/mozilla/pdf.js)            | 4.0.269     |
+| pptx-preview   | [pptx-preview](https://github.com/501351981/pptx-preview) | 1.0.6   |
+| docxjs         | [docxjs](https://github.com/VolodymyrBaydalka/docxjs) | 0.3.6       |

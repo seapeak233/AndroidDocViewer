@@ -1,0 +1,33 @@
+这是一个文本文件示例
+
+文档预览器功能测试
+=================
+
+1. 支持多种文档格式：
+   - PDF 文档
+   - Word 文档 (.docx)
+   - Excel 表格 (.xls, .xlsx)
+   - PowerPoint 演示文稿 (.pptx)
+   - 纯文本文件 (.txt)
+   - Markdown 文档 (.md)
+
+2. 主要功能：
+   - 文档在线预览
+   - 文件信息显示
+   - 文本搜索
+   - 字体大小调整
+   - 内容复制
+   - 文件下载
+
+技术特点：
+- 基于 WebView 实现
+- 支持 Android 原生集成
+- 响应式设计，适配各种屏幕
+
+使用简单，只需几行代码即可实现文档预览功能。
+
+示例代码：
+val docConfig = DocConfig("file:///android_asset/sample.txt", DocType.TXT)
+val fragment = DocViewerFragment.newInstance(docConfig)
+
+这个文本文件用于测试文本预览器的功能。

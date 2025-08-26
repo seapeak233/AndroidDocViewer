@@ -35,5 +35,17 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("config", DocConfig("file:///android_asset/sample.pdf", DocType.PDF))
             startActivity(intent)
         }
+
+        findViewById<View>(R.id.btn_txt).setOnClickListener {
+            val intent = Intent(this, PreviewActivity::class.java)
+            intent.putExtra("config", DocConfig("file:///android_asset/sample.txt", DocType.TXT))
+            startActivity(intent)
+        }
+
+        findViewById<View>(R.id.btn_markdown).setOnClickListener {
+            val intent = Intent(this, PreviewActivity::class.java)
+            intent.putExtra("config", DocConfig("file:///android_asset/sample.md", DocType.MARKDOWN))
+            startActivity(intent)
+        }
     }
 }

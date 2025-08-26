@@ -38,6 +38,8 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
                 DocType.WORD -> "file:///android_asset/word/viewer.html"
                 DocType.PPT -> "file:///android_asset/ppt/viewer.html"
                 DocType.PDF -> "file:///android_asset/pdf/viewer.html"
+                DocType.TXT -> "file:///android_asset/txt/viewer.html"
+                DocType.MARKDOWN -> "file:///android_asset/markdown/viewer.html"
                 else -> null
             }
             if (url == null) {
