@@ -13,8 +13,11 @@ Android文档本地预览方案<持续优化中...>
 - [x] 支持word
 - [x] 支持ppt
 - [x] 支持excel
-- [ ] 支持txt
-- [ ] 支持Markdown
+- [x] 支持txt
+- [x] 支持Markdown
+------ 
+- [x] 支持Fragment引用的形式
+- [ ] 支持View引用的形式
 
 ## 使用
 * 引入aar:
