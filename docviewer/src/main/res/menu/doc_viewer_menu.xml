@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_open_with"
+        android:icon="@drawable/ic_open_in_new"
+        android:title="第三方打开"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/ic_download"
+        android:title="下载到本地"
+        app:showAsAction="never" />
+
+</menu>
