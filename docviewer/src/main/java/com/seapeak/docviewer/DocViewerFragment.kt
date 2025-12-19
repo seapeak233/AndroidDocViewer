@@ -134,12 +134,11 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
     }
 
     override fun onDestroyView() {
-        // 清理WebView资源，防止内存泄漏
+        // 建议先移除父视图中的 webView 再销毁
+        (webView.parent as? android.view.ViewGroup)?.removeView(webView)
         webView.apply {
-            loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+            stopLoading() // 停止加载，防止销毁时仍在请求数据
             clearHistory()
-            clearCache(true)
-            onPause()
             removeAllViews()
             destroy()
         }
@@ -175,19 +174,18 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         
         // 性能优化配置
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
-        webSettings.setAppCacheEnabled(true)
         webSettings.setGeolocationEnabled(false)
-        
+
         // 对于Android 10+，需要额外配置
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            webSettings.setForceDark(WebSettings.FORCE_DARK_OFF)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            webSettings.isAlgorithmicDarkeningAllowed = false
+        } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            @Suppress("DEPRECATION")
+            webSettings.forceDark = WebSettings.FORCE_DARK_OFF
         }
         
         // 禁用不必要的功能以提升性能
-        webSettings.setSavePassword(false)
-        webSettings.setSaveFormData(false)
         webSettings.setNeedInitialFocus(false)
 
         // 设置WebChromeClient处理JS弹窗
@@ -288,24 +286,58 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
                 request: WebResourceRequest?
             ): WebResourceResponse? {
                 Log.i("DocViewer", "shouldInterceptRequest: ${request?.url}")
-                
+
                 // 拦截文件请求，直接读取本地文件
                 request?.url?.let { url ->
                     Log.d("DocViewer", "Intercepting request: $url")
-                    
+
+                    // 处理content://协议
+                    if (url.scheme == "content") {
+                        try {
+                            Log.d("DocViewer", "Handling content URI: $url")
+                            val inputStream = requireContext().contentResolver.openInputStream(android.net.Uri.parse(url.toString()))
+
+                            if (inputStream != null) {
+                                // 从URI中获取文件扩展名
+                                val mimeType = getMimeTypeFromUri(android.net.Uri.parse(url.toString()))
+                                Log.d("DocViewer", "Serving content URI with MIME type: $mimeType")
+
+                                return WebResourceResponse(
+                                    mimeType,
+                                    null,
+                                    inputStream
+                                )
+                            } else {
+                                Log.w("DocViewer", "Cannot open content URI: $url")
+                                return WebResourceResponse(
+                                    "text/plain",
+                                    "UTF-8",
+                                    "Cannot open content URI".byteInputStream()
+                                )
+                            }
+                        } catch (e: Exception) {
+                            Log.e("DocViewer", "Error reading content URI: $url", e)
+                            return WebResourceResponse(
+                                "text/plain",
+                                "UTF-8",
+                                "Error: ${e.message}".byteInputStream()
+                            )
+                        }
+                    }
+
                     // 只拦截非assets的file://请求
                     if (url.scheme == "file" && url.path?.startsWith("/android_asset/") != true) {
                         try {
                             val filePath = url.path!!
                             val file = File(filePath)
-                            
+
                             Log.d("DocViewer", "Trying to access file: ${file.absolutePath}")
                             Log.d("DocViewer", "File exists: ${file.exists()}, canRead: ${file.canRead()}")
-                            
+
                             if (file.exists() && file.canRead()) {
                                 val mimeType = getMimeType(file.extension)
                                 Log.d("DocViewer", "Serving file with MIME type: $mimeType")
-                                
+
                                 return WebResourceResponse(
                                     mimeType,
                                     null, // 不指定编码，让系统自动处理
@@ -331,7 +363,7 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
                         }
                     }
                 }
-                
+
                 return super.shouldInterceptRequest(view, request)
             }
 
@@ -367,6 +399,31 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
                     "md" -> "text/markdown"
                     else -> "application/octet-stream"
                 }
+            }
+
+            private fun getMimeTypeFromUri(uri: android.net.Uri): String {
+                // 先尝试从ContentResolver获取MIME类型
+                val contentType = requireContext().contentResolver.getType(uri)
+                if (contentType != null) {
+                    return contentType
+                }
+
+                // 如果无法获取，尝试从文件名推断
+                val cursor = requireContext().contentResolver.query(uri, null, null, null, null)
+                cursor?.use {
+                    if (it.moveToFirst()) {
+                        val displayNameIndex = it.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        if (displayNameIndex != -1) {
+                            val fileName = it.getString(displayNameIndex)
+                            val extension = fileName.substringAfterLast('.', "")
+                            if (extension.isNotEmpty()) {
+                                return getMimeType(extension)
+                            }
+                        }
+                    }
+                }
+
+                return "application/octet-stream"
             }
         }
     }

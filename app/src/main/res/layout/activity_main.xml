@@ -42,4 +42,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="markdown"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_select_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="选择文件"
+        android:background="@android:color/holo_blue_light"
+        android:textColor="@android:color/white"/>
 </LinearLayout>

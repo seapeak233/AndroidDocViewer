@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    
-    <!-- Android 10及以下版本的存储权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    
-    <!-- Android 13+ 的细分权限 -->
+
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    
-    <!-- 如果需要访问所有文件，可以添加此权限（需要特殊审核） -->
-    <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> -->
-    
-    <!-- 支持分区存储的应用属性 -->
+
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="application/pdf" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="application/msword" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
     <application
-        android:requestLegacyExternalStorage="true">
-        
-        <!-- 文档预览Activity -->
+        android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="34">
+
         <activity
             android:name=".DocViewerActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="unspecified"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-            
-        <!-- FileProvider for sharing files -->
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -36,7 +56,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        
+
     </application>
 
 </manifest>
