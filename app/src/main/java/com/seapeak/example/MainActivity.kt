@@ -10,6 +10,8 @@ import com.seapeak.docviewer.DocViewerActivity
 import com.seapeak.docviewer.config.DocConfig
 import com.seapeak.docviewer.config.DocPageConfig
 import com.seapeak.docviewer.config.DocType
+import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,15 +19,25 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let { selectedUri ->
-            val fileName = getFileNameFromUri(selectedUri) ?: "文档"
-            val docType = getDocTypeFromFileName(fileName)
+            try {
+                val fileName = getFileNameFromUri(selectedUri) ?: "temp_file"
+                val docType = getDocTypeFromFileName(fileName)
 
-            if (docType != null) {
-                // 直接传递content URI，DocViewerFragment会处理
-                val docConfig = DocConfig(selectedUri.toString(), docType)
-                DocViewerActivity.start(this, DocPageConfig.createDefault(docConfig, fileName))
-            } else {
-                Toast.makeText(this, "不支持的文件类型", Toast.LENGTH_SHORT).show()
+                if (docType != null) {
+                    // 将content URI的内容复制到缓存文件，避免权限问题
+                    val tempFile = copyUriToTempFile(selectedUri, fileName)
+                    if (tempFile != null) {
+                        val docConfig = DocConfig("file://${tempFile.absolutePath}", docType)
+                        DocViewerActivity.start(this, DocPageConfig.createDefault(docConfig, fileName))
+                    } else {
+                        Toast.makeText(this, "文件读取失败", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "不支持的文件类型", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "打开文件失败：${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -79,6 +91,23 @@ class MainActivity : AppCompatActivity() {
             lowerFileName.endsWith(".txt") -> DocType.TXT
             lowerFileName.endsWith(".md") -> DocType.MARKDOWN
             else -> null
+        }
+    }
+
+    private fun copyUriToTempFile(uri: Uri, fileName: String): File? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri) ?: return null
+            val tempFile = File(cacheDir, fileName)
+
+            FileOutputStream(tempFile).use { outputStream ->
+                inputStream.use { input ->
+                    input.copyTo(outputStream)
+                }
+            }
+            tempFile
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 
