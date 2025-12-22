@@ -1,5 +1,7 @@
 # AndroidDocViewer
 
+[English](README_EN.md) | 简体中文
+
 [![JitPack](https://jitpack.io/v/seapeak233/AndroidDocViewer.svg)](https://jitpack.io/#seapeak233/AndroidDocViewer)
 
 Android 文档本地预览解决方案
