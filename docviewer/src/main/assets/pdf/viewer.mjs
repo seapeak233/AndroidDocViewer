@@ -587,7 +587,7 @@ const defaultOptions = {
     kind: OptionKind.BROWSER
   },
   supportsPrinting: {
-    value: true,
+    value: false,
     kind: OptionKind.BROWSER
   },
   toolbarDensity: {
@@ -603,7 +603,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   annotationMode: {
-    value: 2,
+    value: 1,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   capCanvasAreaFactor: {
@@ -643,7 +643,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   enableAltTextModelDownload: {
-    value: true,
+    value: false,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE + OptionKind.EVENT_DISPATCH
   },
   enableAutoLinking: {
@@ -659,7 +659,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER
   },
   enableGuessAltText: {
-    value: true,
+    value: false,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE + OptionKind.EVENT_DISPATCH
   },
   enableHighlightFloatingButton: {
@@ -671,7 +671,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   enableNewAltTextWhenAddingImage: {
-    value: true,
+    value: false,
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   enableNewBadge: {
@@ -691,8 +691,8 @@ const defaultOptions = {
     kind: OptionKind.VIEWER + OptionKind.PREFERENCE
   },
   enableScripting: {
-    value: true,
-    kind: OptionKind.VIEWER + OptionKind.PREFERENCE
+    value: false,
+    kind: OptionKind.VIEWER
   },
   enableSignatureEditor: {
     value: false,
@@ -831,8 +831,8 @@ const defaultOptions = {
     kind: OptionKind.API + OptionKind.PREFERENCE
   },
   enableXfa: {
-    value: true,
-    kind: OptionKind.API + OptionKind.PREFERENCE
+    value: false,
+    kind: OptionKind.API
   },
   fontExtraProperties: {
     value: false,
@@ -876,7 +876,7 @@ const defaultOptions = {
     kind: OptionKind.WORKER
   },
   workerSrc: {
-    value: "js/pdf.worker.mjs",
+    value: "./pdf.worker.mjs",
     kind: OptionKind.WORKER
   }
 };
@@ -886,7 +886,7 @@ const defaultOptions = {
     kind: OptionKind.VIEWER
   };
   defaultOptions.sandboxBundleSrc = {
-    value: "js/pdf.sandbox.mjs",
+    value: "./js/pdf.sandbox.mjs",
     kind: OptionKind.VIEWER
   };
   defaultOptions.enableFakeMLManager = {
