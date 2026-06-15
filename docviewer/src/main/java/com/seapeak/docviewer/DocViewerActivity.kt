@@ -47,13 +47,12 @@ class DocViewerActivity : AppCompatActivity() {
         }
 
         fun startWithFile(context: Context, filePath: String, title: String? = null) {
-            val docType = DocViewerFragment.getDocTypeFromExtension(filePath)
-            if (docType == null) {
+            val docConfig = DocConfig.fromFile(filePath)
+            if (docConfig == null) {
                 Toast.makeText(context, "不支持的文件格式", Toast.LENGTH_SHORT).show()
                 return
             }
 
-            val docConfig = DocConfig(filePath, docType)
             start(context, docConfig, title ?: File(filePath).nameWithoutExtension)
         }
     }

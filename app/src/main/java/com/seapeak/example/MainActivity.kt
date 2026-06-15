@@ -82,16 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getDocTypeFromFileName(fileName: String): DocType? {
-        val lowerFileName = fileName.lowercase()
-        return when {
-            lowerFileName.endsWith(".pdf") -> DocType.PDF
-            lowerFileName.endsWith(".doc") || lowerFileName.endsWith(".docx") -> DocType.WORD
-            lowerFileName.endsWith(".xls") || lowerFileName.endsWith(".xlsx") -> DocType.EXCEL
-            lowerFileName.endsWith(".ppt") || lowerFileName.endsWith(".pptx") -> DocType.PPT
-            lowerFileName.endsWith(".txt") -> DocType.TXT
-            lowerFileName.endsWith(".md") -> DocType.MARKDOWN
-            else -> null
-        }
+        return DocType.fromExtension(File(fileName).extension)
     }
 
     private fun copyUriToTempFile(uri: Uri, fileName: String): File? {

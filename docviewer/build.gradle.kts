@@ -6,7 +6,7 @@ plugins {
 
 val GROUP_ID = "com.seapeak.docviewer"
 val ARTIFACT_ID = "viewer"
-val VERSION = "0.2.3"
+val VERSION = "0.2.4"
 
 
 android {
@@ -40,6 +40,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
+    testImplementation("junit:junit:4.13.2")
 }
 
 publishing { // 发布配置

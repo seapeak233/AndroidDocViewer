@@ -28,19 +28,33 @@ data class DocConfig(val url: String, val type: DocType) : Serializable {
          * 根据文件扩展名推断文档类型
          */
         private fun getDocTypeFromExtension(extension: String): DocType? {
-            return when (extension.lowercase()) {
-                "pdf" -> DocType.PDF
-                "doc", "docx" -> DocType.WORD
-                "xls", "xlsx" -> DocType.EXCEL
-                "ppt", "pptx" -> DocType.PPT
-                "txt" -> DocType.TXT
-                "md" -> DocType.MARKDOWN
-                else -> null
-            }
+            return DocType.fromExtension(extension)
         }
     }
 }
 
 enum class DocType {
-    TXT, WORD, EXCEL, PPT, PDF, MARKDOWN
+    TXT, WORD, EXCEL, PPT, PDF, MARKDOWN;
+
+    companion object {
+        val textExtensions = setOf(
+            "txt", "text", "log",
+            "json", "xml", "csv", "tsv",
+            "yaml", "yml", "properties", "ini", "conf", "config", "cfg",
+            "java", "kt", "kts", "gradle", "js", "ts", "css", "html", "htm",
+            "sql", "sh", "bat", "c", "cpp", "h", "hpp", "py", "rb", "go", "rs", "php"
+        )
+
+        fun fromExtension(extension: String): DocType? {
+            return when (extension.lowercase()) {
+                "pdf" -> PDF
+                "doc", "docx" -> WORD
+                "xls", "xlsx" -> EXCEL
+                "ppt", "pptx" -> PPT
+                "md", "markdown" -> MARKDOWN
+                in textExtensions -> TXT
+                else -> null
+            }
+        }
+    }
 }

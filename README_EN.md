@@ -37,7 +37,7 @@ In contrast, the JavaScript ecosystem has more mature solutions for document pre
 - **Word** (.docx) - Based on docxjs, maintains original format
 - **PowerPoint** (.pptx) - Based on pptx-preview, supports animation effects
 - **Excel** (.xlsx) - Based on SheetJS, supports multiple worksheets
-- **TXT** - Plain text preview, supports automatic encoding detection
+- **TXT/Small Text** - Supports previewing txt, json, xml, csv, log, config files, and common code files
 - **Markdown** - Based on markdown-it, supports syntax highlighting
 
 ### Integration Methods
@@ -201,8 +201,8 @@ DocViewerActivity.start(context, pageConfig)
 | Word | `DocType.WORD` | .doc, .docx | Maintains original format |
 | Excel | `DocType.EXCEL` | .xls, .xlsx | Supports multiple worksheets |
 | PowerPoint | `DocType.PPT` | .ppt, .pptx | Supports animation effects |
-| Text | `DocType.TXT` | .txt | Automatic encoding detection |
-| Markdown | `DocType.MARKDOWN` | .md | Supports syntax highlighting |
+| Text | `DocType.TXT` | .txt, .json, .xml, .csv, .tsv, .log, .properties, .ini, .conf, .yaml, .yml, .java, .kt, .js, .ts, .css, .html, .sql, .sh, .py, etc. | Small text preview |
+| Markdown | `DocType.MARKDOWN` | .md, .markdown | Supports syntax highlighting |
 
 ## 💡 More Examples
 
@@ -224,6 +224,7 @@ For complete usage examples, please refer to:
 ## Version Updates
 
 ### Latest Version
+- Extended `DocType.TXT` auto-detection to support JSON, XML, CSV, logs, config files, and common code files
 - Added `DocViewerActivity` direct launch method
 - Added `DocPageConfig` page configuration options
 - Added third-party app opening function

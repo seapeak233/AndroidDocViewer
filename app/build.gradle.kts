@@ -38,5 +38,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation(project(":docviewer"))
+    testImplementation("junit:junit:4.13.2")
 //    implementation("com.github.seapeak233:AndroidDocViewer:0.0.3")
 }

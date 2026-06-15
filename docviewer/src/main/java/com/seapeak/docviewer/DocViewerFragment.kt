@@ -42,7 +42,9 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
          * 获取支持的文档类型
          */
         fun getSupportedExtensions(): List<String> {
-            return listOf("pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "md")
+            return listOf(
+                "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "md", "markdown"
+            ) + DocType.textExtensions
         }
         
         /**
@@ -50,15 +52,7 @@ class DocViewerFragment(private val docConfig: DocConfig) : Fragment(R.layout.do
          */
         fun getDocTypeFromExtension(filePath: String): DocType? {
             val extension = File(filePath).extension.lowercase()
-            return when (extension) {
-                "pdf" -> DocType.PDF
-                "doc", "docx" -> DocType.WORD
-                "xls", "xlsx" -> DocType.EXCEL
-                "ppt", "pptx" -> DocType.PPT
-                "txt" -> DocType.TXT
-                "md" -> DocType.MARKDOWN
-                else -> null
-            }
+            return DocType.fromExtension(extension)
         }
     }
 

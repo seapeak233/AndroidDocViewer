@@ -37,7 +37,7 @@ Android 文档本地预览解决方案
 - **Word** (.docx) - 基于 docxjs，保持原始格式
 - **PowerPoint** (.pptx) - 基于 pptx-preview，支持动画效果
 - **Excel** (.xlsx) - 基于 SheetJS，支持多工作表
-- **TXT** - 纯文本预览，支持编码自动识别
+- **TXT/小文本** - 支持 txt、json、xml、csv、log、配置文件和常见代码文件预览
 - **Markdown** - 基于 markdown-it，支持语法高亮
 
 ### 集成方式
@@ -201,8 +201,8 @@ DocViewerActivity.start(context, pageConfig)
 | Word | `DocType.WORD` | .doc, .docx | 保持原始格式 |
 | Excel | `DocType.EXCEL` | .xls, .xlsx | 支持多工作表 |
 | PowerPoint | `DocType.PPT` | .ppt, .pptx | 支持动画效果 |
-| 文本 | `DocType.TXT` | .txt | 编码自动识别 |
-| Markdown | `DocType.MARKDOWN` | .md | 支持语法高亮 |
+| 文本 | `DocType.TXT` | .txt, .json, .xml, .csv, .tsv, .log, .properties, .ini, .conf, .yaml, .yml, .java, .kt, .js, .ts, .css, .html, .sql, .sh, .py 等 | 小文本预览 |
+| Markdown | `DocType.MARKDOWN` | .md, .markdown | 支持语法高亮 |
 
 ## 💡 更多示例
 
@@ -224,6 +224,7 @@ DocViewerActivity.start(context, pageConfig)
 ## 版本更新
 
 ### 最新版本
+- 扩展 `DocType.TXT` 自动识别范围，支持 JSON、XML、CSV、日志、配置文件和常见代码文件
 - 新增 `DocViewerActivity` 直接启动方式
 - 新增 `DocPageConfig` 页面配置选项
 - 新增第三方应用打开功能
