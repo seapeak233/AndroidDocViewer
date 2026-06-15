@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.3.1"
     }
 
     buildTypes {
@@ -39,5 +39,5 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation(project(":docviewer"))
     testImplementation("junit:junit:4.13.2")
-//    implementation("com.github.seapeak233:AndroidDocViewer:0.0.3")
+//    implementation("com.github.seapeak233:AndroidDocViewer:0.3.1")
 }

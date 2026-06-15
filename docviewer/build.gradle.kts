@@ -6,7 +6,7 @@ plugins {
 
 val GROUP_ID = "com.seapeak.docviewer"
 val ARTIFACT_ID = "viewer"
-val VERSION = "0.2.4"
+val VERSION = "0.3.1"
 
 
 android {
