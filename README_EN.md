@@ -248,12 +248,11 @@ This project is built on the following excellent open-source projects:
 | Component | Purpose | Version | Repository |
 |-----------|---------|---------|------------|
 | SheetJS | Excel file parsing | 0.20.3 | [GitHub](https://github.com/SheetJS/sheetjs) |
-| PDF.js | PDF file rendering | 4.0.269 | [GitHub](https://github.com/mozilla/pdf.js) |
-| pptx-preview | PowerPoint preview | 1.0.6 | [GitHub](https://github.com/501351981/pptx-preview) |
-| docxjs | Word document parsing | 0.3.6 | [GitHub](https://github.com/VolodymyrBaydalka/docxjs) |
-| markdown-it | Markdown rendering | 14.1.0 | [GitHub](https://github.com/markdown-it/markdown-it) |
+| PDF.js | PDF file rendering | 6.0.227 | [GitHub](https://github.com/mozilla/pdf.js) |
+| pptx-preview | PowerPoint preview | 1.0.7 | [GitHub](https://github.com/501351981/pptx-preview) |
+| docxjs | Word document parsing | 0.3.7 | [GitHub](https://github.com/VolodymyrBaydalka/docxjs) |
+| markdown-it | Markdown rendering | 14.2.0 | [GitHub](https://github.com/markdown-it/markdown-it) |
 
 ## License
 
 This project is licensed under an open-source license. Please see the [LICENSE](LICENSE) file for details.
-

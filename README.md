@@ -248,10 +248,10 @@ DocViewerActivity.startWithFile(context, filePath, title)
 | 组件 | 用途 | 版本 | 仓库地址 |
 |------|------|------|----------|
 | SheetJS | Excel 文件解析 | 0.20.3 | [GitHub](https://github.com/SheetJS/sheetjs) |
-| PDF.js | PDF 文件渲染 | 4.0.269 | [GitHub](https://github.com/mozilla/pdf.js) |
-| pptx-preview | PowerPoint 预览 | 1.0.6 | [GitHub](https://github.com/501351981/pptx-preview) |
-| docxjs | Word 文档解析 | 0.3.6 | [GitHub](https://github.com/VolodymyrBaydalka/docxjs) |
-| markdown-it | Markdown 渲染 | 14.1.0 | [GitHub](https://github.com/markdown-it/markdown-it) |
+| PDF.js | PDF 文件渲染 | 6.0.227 | [GitHub](https://github.com/mozilla/pdf.js) |
+| pptx-preview | PowerPoint 预览 | 1.0.7 | [GitHub](https://github.com/501351981/pptx-preview) |
+| docxjs | Word 文档解析 | 0.3.7 | [GitHub](https://github.com/VolodymyrBaydalka/docxjs) |
+| markdown-it | Markdown 渲染 | 14.2.0 | [GitHub](https://github.com/markdown-it/markdown-it) |
 
 ## 许可证
 
