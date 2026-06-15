@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta charset="UTF-8">
+    <title>PPTX Mobile Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            position: relative;
+            overflow: auto;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007AFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #ff3b30;
+            padding: 20px;
+            max-width: 80%;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 25px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .controls button:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .controls button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .slide-info {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .controls {
+                bottom: 10px;
+                padding: 8px 16px;
+            }
+            
+            .controls button {
+                font-size: 16px;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>正在加载 PPTX 文件...</div>
+        </div>
+    </div>
+
+    <!-- 导航控制 -->
+    <div class="controls" id="controls" style="display: none;">
+        <button id="prevBtn" onclick="prevSlide()">‹</button>
+        <span class="slide-info" id="slideInfo">1 / 1</span>
+        <button id="nextBtn" onclick="nextSlide()">›</button>
+    </div>
+
+    <!-- 引入 pptx-preview 库 -->
+    <script type="module">
+        // 动态导入 pptx-preview
+        let pptxPreview;
+        let pptxViewer;
+        let currentSlide = 1;
+        let totalSlides = 1;
+
+        // 初始化
+        async function init() {
+            try {
+                // 动态导入 pptx-preview（如果使用 CDN）
+                // pptxPreview = await import('https://unpkg.com/pptx-preview@latest/dist/pptx-preview.es.js');
+                
+                // 或者使用本地文件（需要先构建并复制到相应位置）
+                const { init } = await import('./node_modules/pptx-preview/dist/pptx-preview.es.js');
+                pptxPreview = { init };
+                
+                loadPPTX();
+            } catch (error) {
+                console.error('加载 pptx-preview 库失败:', error);
+                showError('无法加载预览库');
+            }
+        }
+
+        // 加载 PPTX 文件
+        async function loadPPTX() {
+            try {
+                // 获取 URL 参数中的文件路径
+                const params = new URLSearchParams(window.location.search);
+                const fileUrl = params.get("file");
+
+                if (!fileUrl) {
+                    throw new Error('未指定文件路径');
+                }
+
+                console.log('开始加载文件:', fileUrl);
+
+                // 使用 XMLHttpRequest 加载文件
+                const arrayBuffer = await loadFileAsArrayBuffer(fileUrl);
+                
+                console.log('文件加载成功，大小:', arrayBuffer.byteLength, 'bytes');
+
+                // 隐藏加载提示
+                document.getElementById('loading').style.display = 'none';
+
+                // 初始化预览器
+                const container = document.getElementById('container');
+                container.style.background = 'white';
+
+                const containerRect = container.getBoundingClientRect();
+                
+                pptxViewer = pptxPreview.init(container, {
+                    width: containerRect.width,
+                    height: containerRect.height
+                });
+
+                // 预览文件（带错误处理）
+                const result = await previewWithErrorHandling(arrayBuffer);
+                
+                // 更新幻灯片信息
+                totalSlides = result?.totalSlides || result?.slides?.length || 1;
+                currentSlide = 1;
+                
+                // 显示控制栏（如果有多张幻灯片）
+                if (totalSlides > 1) {
+                    document.getElementById('controls').style.display = 'flex';
+                    updateSlideInfo();
+                }
+
+                console.log('PPTX 预览成功，幻灯片总数:', totalSlides);
+
+            } catch (error) {
+                console.error('加载 PPTX 失败:', error);
+                document.getElementById('loading').style.display = 'none';
+                showError('加载失败: ' + error.message);
+            }
+        }
+
+        // 使用 XMLHttpRequest 加载文件为 ArrayBuffer
+        function loadFileAsArrayBuffer(url) {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        resolve(xhr.response);
+                    } else {
+                        reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    reject(new Error('网络错误或文件不存在'));
+                };
+                
+                xhr.open('GET', url);
+                xhr.responseType = 'arraybuffer';
+                xhr.send();
+            });
+        }
+
+        // 带错误处理的预览函数
+        async function previewWithErrorHandling(arrayBuffer) {
+            try {
+                return await pptxViewer.preview(arrayBuffer);
+            } catch (previewError) {
+                console.warn('标准预览失败，尝试降级预览:', previewError);
+                
+                // 降级处理：显示文件已加载的提示
+                const container = document.getElementById('container');
+                container.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 40px; text-align: center; color: #666;">
+                        <div style="font-size: 64px; margin-bottom: 20px;">📄</div>
+                        <h2 style="margin-bottom: 15px; color: #333;">PPTX 文件已加载</h2>
+                        <p style="margin-bottom: 10px;">文件大小: ${(arrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB</p>
+                        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px; max-width: 400px;">
+                            <p style="margin: 0; color: #666; line-height: 1.5;">
+                                该文件包含当前预览库不支持的复杂元素<br>
+                                建议使用专业 Office 软件打开查看完整内容
+                            </p>
+                        </div>
+                    </div>
+                `;
+                
+                return {
+                    totalSlides: 1,
+                    slides: [{ id: 'error-slide' }],
+                    error: true
+                };
+            }
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const container = document.getElementById('container');
+            container.innerHTML = `
+                <div class="error">
+                    <div class="error-icon">❌</div>
+                    <h3>预览失败</h3>
+                    <p>${message}</p>
+                    <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">
+                        请检查文件路径是否正确
+                    </p>
+                </div>
+            `;
+        }
+
+        // 更新幻灯片信息
+        function updateSlideInfo() {
+            document.getElementById('slideInfo').textContent = `${currentSlide} / ${totalSlides}`;
+            document.getElementById('prevBtn').disabled = currentSlide <= 1;
+            document.getElementById('nextBtn').disabled = currentSlide >= totalSlides;
+        }
+
+        // 上一张幻灯片
+        window.prevSlide = function() {
+            if (pptxViewer && pptxViewer.goToSlide && currentSlide > 1) {
+                try {
+                    currentSlide--;
+                    pptxViewer.goToSlide(currentSlide - 1);
+                    updateSlideInfo();
+                } catch (e) {
+                    console.warn('切换幻灯片失败:', e);
+                }
+            }
+        };
+
+        // 下一张幻灯片
+        window.nextSlide = function() {
+            if (pptxViewer && pptxViewer.goToSlide && currentSlide < totalSlides) {
+                try {
+                    currentSlide++;
+                    pptxViewer.goToSlide(currentSlide - 1);
+                    updateSlideInfo();
+                } catch (e) {
+                    console.warn('切换幻灯片失败:', e);
+                }
+            }
+        };
+
+        // 处理窗口大小变化
+        window.addEventListener('resize', function() {
+            if (pptxViewer && pptxViewer.resize) {
+                const container = document.getElementById('container');
+                const rect = container.getBoundingClientRect();
+                try {
+                    pptxViewer.resize(rect.width, rect.height);
+                } catch (e) {
+                    console.warn('调整大小失败:', e);
+                }
+            }
+        });
+
+        // 启动应用
+        init();
+    </script>
+</body>
+
+</html>
